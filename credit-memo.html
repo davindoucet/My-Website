@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Credit Memo Sample - Davin Doucet</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            background: white;
+            padding: 40px 0;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            font-weight: 600;
+            margin-bottom: 10px;
+            color: #111;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 1.1em;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #666;
+            text-decoration: none;
+            font-size: 0.9em;
+        }
+
+        .back-link:hover {
+            color: #111;
+        }
+
+        .memo-card {
+            background: white;
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .company-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .company-name {
+            font-size: 1.8em;
+            font-weight: 600;
+            color: #111;
+        }
+
+        .recommendation {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            font-size: 0.9em;
+        }
+
+        .approve { background: #d4edda; color: #155724; }
+        .decline { background: #f8d7da; color: #721c24; }
+        .conditional { background: #fff3cd; color: #856404; }
+
+        .executive-summary {
+            background: #f8f9fa;
+            border-left: 4px solid #007bff;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 0 6px 6px 0;
+        }
+
+        .executive-summary h3 {
+            margin-bottom: 10px;
+            color: #007bff;
+        }
+
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .metric {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.4em;
+            font-weight: 600;
+            color: #111;
+        }
+
+        .metric-label {
+            font-size: 0.85em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .metric.good { background: #d4edda; }
+        .metric.warning { background: #fff3cd; }
+        .metric.bad { background: #f8d7da; }
+
+        .section {
+            margin: 25px 0;
+        }
+
+        .section h3 {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #111;
+            border-bottom: 1px solid #e9ecef;
+            padding-bottom: 5px;
+        }
+
+        .financial-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 0.9em;
+        }
+
+        .financial-table th,
+        .financial-table td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .financial-table th {
+            background: #f8f9fa;
+            font-weight: 500;
+            color: #555;
+        }
+
+        .financial-table td {
+            font-family: 'Courier New', monospace;
+        }
+
+        .financial-table .year-header {
+            text-align: center;
+            font-weight: 600;
+        }
+
+        .ratio-analysis {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .ratio-category {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 6px;
+        }
+
+        .ratio-category h4 {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: #111;
+        }
+
+        .ratio-item {
+            display: flex;
+            justify-content: space-between;
+            margin: 8px 0;
+            padding: 5px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .ratio-name {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .ratio-value {
+            font-weight: 500;
+            font-family: 'Courier New', monospace;
+        }
+
+        .covenant-check {
+            background: #f8f9fa;
+            border-radius: 6px;
+            padding: 15px;
+            margin: 10px 0;
+        }
+
+        .covenant-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 8px 0;
+            padding: 8px 0;
+        }
+
+        .covenant-name {
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        .covenant-status {
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: 500;
+        }
+
+        .pass { background: #d4edda; color: #155724; }
+        .fail { background: #f8d7da; color: #721c24; }
+        .warning { background: #fff3cd; color: #856404; }
+
+        .risk-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-left: 3px solid #dc3545;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .risk-item h4 {
+            color: #dc3545;
+            font-size: 0.95em;
+            margin-bottom: 5px;
+        }
+
+        .risk-item p {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .strength-item {
+            margin: 10px 0;
+            padding: 10px;
+            background: #f8f9fa;
+            border-left: 3px solid #28a745;
+            border-radius: 0 4px 4px 0;
+        }
+
+        .strength-item h4 {
+            color: #28a745;
+            font-size: 0.95em;
+            margin-bottom: 5px;
+        }
+
+        .strength-item p {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .projection-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        .projection-table th,
+        .projection-table td {
+            padding: 8px 12px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+        }
+
+        .projection-table th {
+            background: #f8f9fa;
+            font-weight: 500;
+        }
+
+        .projection-table td {
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .company-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .metrics-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .ratio-analysis {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <a href="./" class="back-link">← Back to Portfolio</a>
+    
+    <div class="header">
+        <h1>Credit Memo Sample</h1>
+        <p>Private company analysis with historicals, projections, ratio analysis, DSCR, and covenant checks</p>
+    </div>
+
+    <div class="container">
+        <div class="memo-card">
+            <div class="company-header">
+                <div>
+                    <div class="company-name">TechFlow Solutions Inc.</div>
+                    <p style="color: #666; margin-top: 5px;">Software Development & IT Services</p>
+                </div>
+                <div class="recommendation approve">APPROVE</div>
+            </div>
+
+            <div class="executive-summary">
+                <h3>Executive Summary</h3>
+                <p><strong>Recommendation:</strong> APPROVE $2.5M revolving credit facility</p>
+                <p><strong>Rationale:</strong> TechFlow demonstrates strong operational metrics with EBITDA margins of 18-22%, healthy DSCR of 2.1x, and robust cash generation. The company has diversified revenue streams, strong management team, and conservative leverage profile. Key risks include customer concentration and competitive market pressures, but covenant headroom provides adequate protection.</p>
+            </div>
+
+            <div class="metrics-grid">
+                <div class="metric good">
+                    <div class="metric-value">2.1x</div>
+                    <div class="metric-label">DSCR</div>
+                </div>
+                <div class="metric good">
+                    <div class="metric-value">1.8x</div>
+                    <div class="metric-label">Interest Coverage</div>
+                </div>
+                <div class="metric good">
+                    <div class="metric-value">2.3x</div>
+                    <div class="metric-label">Total Debt/EBITDA</div>
+                </div>
+                <div class="metric warning">
+                    <div class="metric-value">35%</div>
+                    <div class="metric-label">Customer Concentration</div>
+                </div>
+                <div class="metric good">
+                    <div class="metric-value">$1.2M</div>
+                    <div class="metric-label">Cash Balance</div>
+                </div>
+                <div class="metric good">
+                    <div class="metric-value">18.5%</div>
+                    <div class="metric-label">EBITDA Margin</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Company Overview</h3>
+                <p><strong>TechFlow Solutions Inc.</strong> is a mid-market software development company specializing in enterprise applications and cloud migration services. Founded in 2018, the company has grown from $2M to $12M in revenue over 5 years, serving clients across healthcare, finance, and manufacturing sectors.</p>
+                
+                <p><strong>Management:</strong> CEO Sarah Chen (15 years industry experience), CTO Michael Rodriguez (former Microsoft engineer), CFO Jennifer Park (CPA, Big 4 background)</p>
+                
+                <p><strong>Business Model:</strong> 60% recurring SaaS revenue, 30% project-based development, 10% consulting services</p>
+            </div>
+
+            <div class="section">
+                <h3>Historical Financial Performance</h3>
+                <table class="financial-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th class="year-header">2021</th>
+                            <th class="year-header">2022</th>
+                            <th class="year-header">2023</th>
+                            <th class="year-header">2024E</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Revenue</td><td>$8.2M</td><td>$9.8M</td><td>$11.4M</td><td>$12.5M</td></tr>
+                        <tr><td>EBITDA</td><td>$1.4M</td><td>$1.8M</td><td>$2.1M</td><td>$2.3M</td></tr>
+                        <tr><td>EBITDA Margin</td><td>17.1%</td><td>18.4%</td><td>18.4%</td><td>18.4%</td></tr>
+                        <tr><td>Net Income</td><td>$0.8M</td><td>$1.1M</td><td>$1.3M</td><td>$1.4M</td></tr>
+                        <tr><td>Total Debt</td><td>$3.2M</td><td>$2.8M</td><td>$2.5M</td><td>$2.5M</td></tr>
+                        <tr><td>Cash</td><td>$0.6M</td><td>$0.9M</td><td>$1.1M</td><td>$1.2M</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="section">
+                <h3>Financial Projections (2025-2027)</h3>
+                <table class="projection-table">
+                    <thead>
+                        <tr>
+                            <th>Metric</th>
+                            <th>2025E</th>
+                            <th>2026E</th>
+                            <th>2027E</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>Revenue</td><td>$13.8M</td><td>$15.2M</td><td>$16.7M</td></tr>
+                        <tr><td>EBITDA</td><td>$2.6M</td><td>$2.9M</td><td>$3.2M</td></tr>
+                        <tr><td>EBITDA Margin</td><td>18.8%</td><td>19.1%</td><td>19.2%</td></tr>
+                        <tr><td>Net Income</td><td>$1.6M</td><td>$1.8M</td><td>$2.0M</td></tr>
+                        <tr><td>FCF</td><td>$1.8M</td><td>$2.1M</td><td>$2.3M</td></tr>
+                    </tbody>
+                </table>
+                <p><strong>Key Assumptions:</strong> 10-12% annual revenue growth, margin expansion from operational efficiency, minimal capex requirements</p>
+            </div>
+
+            <div class="section">
+                <h3>Ratio Analysis</h3>
+                <div class="ratio-analysis">
+                    <div class="ratio-category">
+                        <h4>Leverage Ratios</h4>
+                        <div class="ratio-item">
+                            <span class="ratio-name">Total Debt/EBITDA</span>
+                            <span class="ratio-value">2.3x</span>
+                        </div>
+                        <div class="ratio-item">
+                            <span class="ratio-name">Net Debt/EBITDA</span>
+                            <span class="ratio-value">1.1x</span>
+                        </div>
+                        <div class="ratio-item">
+                            <span class="ratio-name">Debt/Equity</span>
+                            <span class="ratio-value">0.8x</span>
+                        </div>
+                    </div>
+                    
+                    <div class="ratio-category">
+                        <h4>Coverage Ratios</h4>
+                        <div class="ratio-item">
+                            <span class="ratio-name">DSCR</span>
+                            <span class="ratio-value">2.1x</span>
+                        </div>
+                        <div class="ratio-item">
+                            <span class="ratio-name">Interest Coverage</span>
+                            <span class="ratio-value">1.8x</span>
+                        </div>
+                        <div class="ratio-item">
+                            <span class="ratio-name">FCF Coverage</span>
+                            <span class="ratio-value">1.5x</span>
+                        </div>
+                    </div>
+                    
+                    <div class="ratio-category">
+                        <h4>Profitability Ratios</h4>
+                        <div class="ratio-item">
+                            <span class="ratio-name">EBITDA Margin</span>
+                            <span class="ratio-value">18.4%</span>
+                        </div>
+                        <div class="ratio-item">
+                            <span class="ratio-name">Net Margin</span>
+                            <span class="ratio-value">11.2%</span>
+                        </div>
+                        <div class="ratio-item">
+                            <span class="ratio-name">ROE</span>
+                            <span class="ratio-value">15.8%</span>
+                        </div>
+                    </div>
+                    
+                    <div class="ratio-category">
+                        <h4>Liquidity Ratios</h4>
+                        <div class="ratio-item">
+                            <span class="ratio-name">Current Ratio</span>
+                            <span class="ratio-value">2.1x</span>
+                        </div>
+                        <div class="ratio-item">
+                            <span class="ratio-name">Quick Ratio</span>
+                            <span class="ratio-value">1.8x</span>
+                        </div>
+                        <div class="ratio-item">
+                            <span class="ratio-name">Cash/Debt</span>
+                            <span class="ratio-value">48%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Covenant Compliance</h3>
+                <div class="covenant-check">
+                    <h4>Financial Covenants (Proposed)</h4>
+                    <div class="covenant-item">
+                        <span class="covenant-name">Minimum DSCR: 1.25x</span>
+                        <span class="covenant-status pass">PASS (2.1x)</span>
+                    </div>
+                    <div class="covenant-item">
+                        <span class="covenant-name">Maximum Total Debt/EBITDA: 4.0x</span>
+                        <span class="covenant-status pass">PASS (2.3x)</span>
+                    </div>
+                    <div class="covenant-item">
+                        <span class="covenant-name">Minimum Interest Coverage: 1.5x</span>
+                        <span class="covenant-status pass">PASS (1.8x)</span>
+                    </div>
+                    <div class="covenant-item">
+                        <span class="covenant-name">Minimum EBITDA: $1.5M</span>
+                        <span class="covenant-status pass">PASS ($2.1M)</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Key Strengths</h3>
+                <div class="strength-item">
+                    <h4>Recurring Revenue Model</h4>
+                    <p>60% of revenue from SaaS subscriptions provides predictable cash flow and reduces customer churn risk</p>
+                </div>
+                <div class="strength-item">
+                    <h4>Strong Management Team</h4>
+                    <p>Experienced leadership with proven track record in software development and financial management</p>
+                </div>
+                <div class="strength-item">
+                    <h4>Diversified Client Base</h4>
+                    <p>Serves multiple industries reducing sector concentration risk, though top customer represents 35% of revenue</p>
+                </div>
+                <div class="strength-item">
+                    <h4>Conservative Leverage</h4>
+                    <p>Low debt levels with strong covenant headroom provide flexibility for growth initiatives</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Key Risks</h3>
+                <div class="risk-item">
+                    <h4>Customer Concentration</h4>
+                    <p>Top customer represents 35% of revenue, creating significant dependency risk if relationship deteriorates</p>
+                </div>
+                <div class="risk-item">
+                    <h4>Competitive Market</h4>
+                    <p>Intense competition from larger software companies and offshore development firms could pressure margins</p>
+                </div>
+                <div class="risk-item">
+                    <h4>Technology Risk</h4>
+                    <p>Rapid technology changes require continuous R&D investment to maintain competitive position</p>
+                </div>
+                <div class="risk-item">
+                    <h4>Economic Sensitivity</h4>
+                    <p>Project-based revenue (30%) may be vulnerable to economic downturns affecting client IT spending</p>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Recommendation</h3>
+                <div class="executive-summary">
+                    <p><strong>APPROVE $2.5M revolving credit facility</strong> with the following terms:</p>
+                    <ul style="margin: 10px 0; padding-left: 20px;">
+                        <li>Interest Rate: Prime + 2.5% (currently 8.0%)</li>
+                        <li>Maturity: 3 years with 1-year extension option</li>
+                        <li>Financial Covenants: DSCR ≥ 1.25x, Total Debt/EBITDA ≤ 4.0x</li>
+                        <li>Use of Proceeds: Working capital and growth initiatives</li>
+                    </ul>
+                    <p><strong>Rationale:</strong> Strong operational metrics, adequate covenant headroom, and experienced management team support approval. Monitor customer concentration risk and maintain regular covenant testing.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
